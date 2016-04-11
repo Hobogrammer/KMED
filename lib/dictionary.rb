@@ -15,16 +15,25 @@ require './jars/xml2eb-1.0.5.jar'
 java_import 'fuku.eb4j.Book'
 java_import 'fuku.eb4j.hook.DefaultHook'
 
-book_path = File.open("resource/JMdict")
-book = Book.new(book_path.path)
+class Dictionary
+attr_reader :name
 
-search_term = "油"
-sub_dic = book.getSubBooks
-dic = sub_dic[0]
-searcher = dic.searchWord(search_term)
-hook = DefaultHook.new(dic)
+  def initialize(filepath)
+    @dic = set_dictionary(filepath)
+    @hook = DefaultHook.new(@dic)
+    @name = @dic.getName 
+  end
 
-while (searcher.getNextResult)
-  result = searcher.getNextResult
-  puts result.getText(hook)
+
+  def search(key)
+    searcher = @dic.searchWord(key)
+    result = searcher.getNextResult
+    definition = result.getText(@hook) if result
+  end
+
+  private
+
+  def set_dictionary(filepath)
+    dic = Book.new(filepath).getSubBooks.first
+  end
 end
