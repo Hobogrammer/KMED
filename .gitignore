@@ -1,0 +1,5 @@
+*.txt
+*.csv
+resouce/*/
+*.zip
+*.7z
