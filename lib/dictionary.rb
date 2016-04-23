@@ -16,16 +16,21 @@ java_import 'fuku.eb4j.Book'
 java_import 'fuku.eb4j.hook.DefaultHook'
 
 class Dictionary
+attr_reader :name
 
-  def initialize(file_path)
-
+  def initialize(filepath)
+    @dic = _set_dic(filepath)
+    @hook = DefaultHook.new(@dic)
+    @name = @dic.getName 
   end
 
-  def _set_dic
-
+  def _set_dic(filepath)
+    dic = Book.new(filepath).getSubBooks.first
   end
 
   def search(key)
-  
+    searcher = dic.searchWord(key) 
+    result = searcher.getNextResult
+    definition = result.getText(@hook) if result
   end
 end
