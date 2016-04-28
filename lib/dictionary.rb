@@ -29,7 +29,7 @@ attr_reader :name
   end
 
   def search(key)
-    searcher = dic.searchWord(key) 
+    searcher = @dic.searchWord(key)
     result = searcher.getNextResult
     definition = result.getText(@hook) if result
   end
