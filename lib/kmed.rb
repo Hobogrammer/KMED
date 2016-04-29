@@ -15,23 +15,15 @@ def main
   dic = Dictionary.new(dic_path)
   CSV.open("./resource/#{timestamp}_ankiImport.csv", "w") do |csv|
     File.foreach(kindle_export_path) do |line|
-      parts = line.scan(/^(\S*)[\s](\S*)/)
-      term = parts[0][0].gsub(/(\(.*?\))/, '')
+      term_w_furi, sentence = line.match(/^(\S*)[\s](\S*)/).captures
+      term = term_w_furi.gsub(/(\(.*?\))/, '')
       definition = dic.search(term)
 
       
       puts "Captured Term: #{term}"
       puts "Searched Definition: #{definition}"
-      puts "Unfiltered line: #{parts}"
-      parts = parts.flatten.join(' ') #seperate the desentence and furigana before this for easier processing
-      puts "PARTS AFTER FLATTEN: #{parts}"
-      puts "Whole line: #{parts}"
-      furi = parts.scan(/(\(.*?\))/)
-      furi = furi.flatten.join(' ')
-      puts "Captured furigana: #{furi}"
-      furi.empty? ? (puts "No Furi") : pure_furi = furi.gsub(/\(|\)/, '')
-      puts "Pure Furi: #{pure_furi}"
-      csv << ["#{term}","#{furi}","#{definition}","#{parts}"]
+      puts "Sentence: #{sentence}"
+      csv << ["#{term}","#{term_w_furi}","#{definition}","#{sentence}"]
     end
   end
 end
