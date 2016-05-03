@@ -1,4 +1,5 @@
 require_relative 'constants'
+require 'pry-nav'
 
 class Gaiji
   include Constants
@@ -8,7 +9,18 @@ class Gaiji
     @gaiji = _set_hash
   end
 
-  def convert(code)
+  def de_gaiji(definition)
+    return if definition.nil?
+    gaiji_a = definition.scan(/\[.*?\]/)
+    if !gaiji_a.empty?
+      gaiji_a.each do |gaiji|
+        _convert(gaiji) ? definition = definition.gsub("#{gaiji}", _convert(gaiji)) : definition = definition.gsub("#{gaiji}", '')
+      end
+    end
+    return definition
+  end
+
+  def _convert(code)
     code = _get_code(code)
     @gaiji["#{code}"]	
   end
