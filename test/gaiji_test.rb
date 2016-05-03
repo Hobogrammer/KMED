@@ -4,90 +4,49 @@ require 'pry-nav'
 
 describe "Gaiji" do
 
-  it "should return '' for dictionary CHUJITEN when given [GAIJI=]" do
+  it "should find gaiji codes in definitions and replace them with the unicode counter part" do
 
+    it "for Chujiten" do
+      code_definition = ""
+      gaiji = Gaiji.new("CHIJITEN")
+      assert_equal("", gaiji.de_gaiji(code_sentence))
+    end
+
+    it "for Daijirin" do
+      code_definition = "つぐ [1] 【[GAIJI=wA740]榔・[GAIJI=wA740]榔子】"
+      gaiji = Gaiji.new("DAIJIRIN")
+      assert_equal("", gaiji.de_gaiji(code_sentence))
+    end
+
+    it "for Daijisen" do
+      code_definition = "い‐さん【遺産】ヰ‐
+      [GAIJI=wC373]死後に残した財産。法律的には、人が死亡当時持っていた所有権・債権・債務も含む全財産をいう。相続財産。[GAIJI=wC374]前代の人が残した業績。「文化—」"
+      gaiji = Gaiji.new("DAIJISEN")
+      assert_equal("", gaiji.de_gaiji(code_sentence))
+    end
+
+    it "for Genius" do
+      code_definition = ""
+      gaiji = Gaiji.new("GENIUS")
+      assert_equal("", gaiji.de_gaiji(code_sentence))
+    end
+
+    it "for Kojien" do
+      code_definition = ""
+      gaiji = Gaiji.new("KOJIEN")
+      assert_equal("", gaiji.de_gaiji(code_sentence))
+    end
+
+    it "for Meikyojj" do
+      code_definition = ""
+      gaiji = Gaiji.new("MEIKYOJJ")
+      assert_equal("", gaiji.de_gaiji(code_sentence))
+    end
+
+    it "for Meikyou" do
+      code_definition = "ぎょう‐せき【業績】ゲフ─[GAIJI=wB03E]名[GAIJI=wB03F]"
+      gaiji = Gaiji.new("MEIKYOU")
+      assert_equal("", gaiji.de_gaiji(code_sentence))
+    end
   end
-  
-  it "should return '' for dictionary CHUJITEN when given [GAIJI=]" do
-
-  end
-
-  it "should return '' for dictionary CHUJITEN when given [GAIJI=]" do
-
-  end
-
-  it "should return '' for dictionary DAIJIRIN when given [GAIJI=]" do
-
-  end
-
-  it "should return '' for dictionary DAIJIRIN when given [GAIJI=]" do
-
-  end
-
-  it "should return '' for dictionary DAIJIRIN when given [GAIJI=]" do
-
-  end
-
-  it "should return '' for dictionary DAIJISEN when given [GAIJI=]" do
-
-  end
-
-  it "should return '' for dictionary DAIJISEN when given [GAIJI=]" do
-
-  end
-
-  it "should return '' for dictionary DAIJISEN when given [GAIJI=]" do
-
-  end
-
-  it "should return '' for dictionary KOJIEN when given [GAIJI=]" do
-
-  end
-
-  it "should return '' for dictionary KOJIEN when given [GAIJI=]" do
-
-  end
-
-  it "should return '' for dictionary KOJIEN when given [GAIJI=]" do
-    gaiji = Gaiji.new("MEIKYOU")
-    unicode_char = gaiji.convert("[GAIJI=wA628]")
-    assert_equal("玕", unicode_char)
-  end
-
-  it "should return 'Ⅰ' for dictionary MEIKOJJ when given [GAIJI=wA36B]" do 
-    gaiji = Gaiji.new("MEIKOJJ")
-    unicode_char = gaiji.convert("[GAIJI=wA36B]")
-    assert_equal("Ⅰ", unicode_char)
-  end
-
-  it "should return '㋤' for dictionary MEIKOJJ when given [GAIJI=wB322]" do
-    gaiji = Gaiji.new("MEIKOJJ")
-    unicode_char = gaiji.convert("[GAIJI=wB322]")
-    assert_equal("㋤", unicode_char)
-  end
-
-  it "should return '⑳' for dictionary MEIKOJJ when given [GAIJI=wB03A]" do
-    gaiji = Gaiji.new("MEIKOJJ")
-    unicode_char = gaiji.convert("[GAIJI=wB03A]")
-    assert_equal("⑳", unicode_char)
-  end
-
-  it "should return '₁' for dictionary MEIKYOU when given [GAIJI=wA170]" do
-    gaiji = Gaiji.new("MEIKYOU")
-    unicode_char = gaiji.convert("[GAIJI=wA170]")
-    assert_equal("₁", unicode_char)
-  end
-
-  it "should return '玕' for dictionary MEIKYOU when given [GAIJI=wA628]" do
-    gaiji = Gaiji.new("MEIKYOU")
-    unicode_char = gaiji.convert("[GAIJI=wA628]")
-    assert_equal("玕", unicode_char)
-  end
-
-  it "should return '餛' for dictionary MEIKYOU when given [GAIJI=wA77D]" do
-    gaiji = Gaiji.new("MEIKYOU")
-    unicode_char = gaiji.convert("[GAIJI=wA77D]")
-    assert_equal("餛", unicode_char)
-  end
-
 end
