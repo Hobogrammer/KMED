@@ -3580,7 +3580,7 @@ module Constants
     "0xF07A" => "菟"
   }
 
-  MEIKOJJ = {
+  MEIKYOJJ = {
     "0xA36B" => "Ⅰ",
     "0xA36C" => "Ⅱ",
     "0xA36D" => "Ⅲ",
