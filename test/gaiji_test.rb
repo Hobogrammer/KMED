@@ -1,10 +1,9 @@
 require 'test_helper'
 require 'gaiji'
-require 'pry-nav'
 
 describe "Gaiji" do
 
-  it "should find gaiji codes in definitions and replace them with the unicode counter part" do
+  describe "should find gaiji codes in definitions and replace them with the unicode counter part" do
 
     it "for Chujiten" do
       code_definition = ""
