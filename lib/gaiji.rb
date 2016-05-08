@@ -1,12 +1,10 @@
 require_relative 'constants'
-require 'pry-nav'
 
 class Gaiji
   include Constants
 
   def initialize(dictionary_name)
-    @set = dictionary_name
-    @gaiji = _set_hash
+    @gaiji = _set_hash(dictionary_name)
   end
 
   def de_gaiji(definition)
@@ -32,7 +30,7 @@ class Gaiji
     code.sub('w', '0x')
   end
 
-  def _set_hash
-    Constants.const_get(@set)
+  def _set_hash(dictionary_name)
+    Constants.const_get(dictionary_name)
   end
 end
