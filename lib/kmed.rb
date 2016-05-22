@@ -15,24 +15,26 @@ def main
   gaiji = Gaiji.new(dic.name.upcase)
   line_count = 0
   CSV.open(out_path, "w") do |csv|
-    term , term_w_furi = ""
+    import = ImportHandler.new
     File.foreach(kindle_export_path) do |line|
-      if (line == "\r\n" || line == "\n" || line.empty?)
+      line = line.strip
+
+      if line.empty?
         line_count = 0
         next
       end
 
       if line_count.zero?
-        term_w_furi = line
-        term = ImportHandler.defuri(term_w_furi)
+        import.set_term(line)
         line_count += 1
         next
       end
 
-      import = ImportHandler.to_hash(line)
-      definition = dic.search(term)
-      definition = gaiji.de_gaiji(definition)
-      csv << [term,term_w_furi,definition,import[:sentence],import[:meta_string]]
+      import.process_sentence_meta(line)
+      import.set_definition(gaiji.de_gaiji(dic.search(import.term)))
+      csv << [import.term,import.term_w_furi,import.definition,
+              import.sentence,"#{import.title}, #{import.author},
+              #{import.publisher}"]
       line_count += 1
     end
   end
