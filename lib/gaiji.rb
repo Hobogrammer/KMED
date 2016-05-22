@@ -15,7 +15,7 @@ class Gaiji
         _convert(gaiji) ? definition = definition.gsub("#{gaiji}", _convert(gaiji)) : definition = definition.gsub("#{gaiji}", '')
       end
     end
-    return definition
+    definition
   end
 
   def _convert(code)
