@@ -19,18 +19,21 @@ class Dictionary
 attr_reader :name
 
   def initialize(filepath)
-    @dic = _set_dic(filepath)
+    @dic = set_dictionary(filepath)
     @hook = DefaultHook.new(@dic)
     @name = @dic.getName 
   end
 
-  def _set_dic(filepath)
-    dic = Book.new(filepath).getSubBooks.first
-  end
 
   def search(key)
     searcher = @dic.searchWord(key)
     result = searcher.getNextResult
     definition = result.getText(@hook) if result
+  end
+
+  private
+
+  def set_dictionary(filepath)
+    dic = Book.new(filepath).getSubBooks.first
   end
 end

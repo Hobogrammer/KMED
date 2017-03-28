@@ -12,36 +12,38 @@ attr_reader :author, :definition, :publisher, :sentence,
     @title = ""
   end
 
-  def set_definition(definition)
-    @definition = definition
+  def set_definition(gaiji, definition)
+    @definition = gaiji.de_gaiji(definition)
   end
 
   def set_term(import)
     @term_w_furi = import
-    @term = _defuri(@term_w_furi)
+    @term = defuri(@term_w_furi)
   end
 
   def process_sentence_meta(import)
     import = import.gsub(/^\d\)\s?/, '')
-    @metadata = _set_meta(import.match(/《.*?》/).to_s)
+    @metadata = set_meta(import.match(/《.*?》/).to_s)
     @sentence = import.gsub(/《.*?》/, '')
-    _post_process()
+    post_process()
   end
 
-  def _get_title(import)
+  private
+
+  def get_title(import)
     import.match(/^《(.\S*)/).to_s.gsub("《", '')
   end
 
-  def _set_meta(meta)
-    @title = _get_title(meta)
+  def set_meta(meta)
+    @title = get_title(meta)
     @publisher , @author = meta.scan(/\((.*?)\)/).flatten
   end
 
-  def _defuri(full_term)
+  def defuri(full_term)
     full_term.gsub(/(\(.*?\))/, '')
   end
 
-  def _post_process()
+  def post_process()
     colors = ["#A6E22E", "#947ABE"]
     @sentence = sentence.gsub(@term, "<span style='color:#{colors.sample}'>#{@term}</span>")
   end

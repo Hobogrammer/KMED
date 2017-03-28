@@ -31,9 +31,10 @@ def main
       end
 
       import.process_sentence_meta(line)
-      import.set_definition(gaiji.de_gaiji(dic.search(import.term)))
-      csv << [import.term,import.term_w_furi,import.definition,
-              import.sentence,"#{import.title} #{import.author} #{import.publisher}"]
+      definition = dic.search(import.term)
+      import.set_definition(gaiji, definition)
+      csv << [import.term,import.term_w_furi,import.definition,import.sentence,
+              [import.title, import.author, import.publisher].join(' ')]
       line_count += 1
     end
   end
