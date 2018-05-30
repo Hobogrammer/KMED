@@ -1,3 +1,5 @@
+require 'natto'
+
 class ImportHandler
 attr_reader :author, :definition, :publisher, :sentence,
   :term, :term_w_furi, :title
@@ -44,6 +46,8 @@ attr_reader :author, :definition, :publisher, :sentence,
   end
 
   def post_process()
+    natto = Natto::MeCab.new
+    puts natto.parse(@sentence)
     colors = ["#A6E22E", "#947ABE"]
     @sentence = sentence.gsub(@term, "<span style='color:#{colors.sample}'>#{@term}</span>")
   end

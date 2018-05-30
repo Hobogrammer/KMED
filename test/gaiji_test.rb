@@ -23,12 +23,6 @@ describe "Gaiji" do
       assert_equal("①死後に残した財産", gaiji.de_gaiji(gaiji_string))
     end
 
-    #it "for Genius" do
-      #gaiji_string = ""
-      #gaiji = Gaiji.new("GENIUS")
-      #assert_equal("", gaiji.de_gaiji(gaiji_string))
-    #end
-
     it "for Kojien" do
       gaiji_string = "[GAIJI=wA456]"
       gaiji = Gaiji.new("KOJIEN")
