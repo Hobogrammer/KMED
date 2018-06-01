@@ -8,7 +8,7 @@ def main
   dic_path = ARGV[0]
   kindle_export_path = ARGV[1]
   timestamp = Time.now.strftime("%Y%m%d%H%M%S")
-  out_path = "../output/ankiImport_#{timestamp}.txt"
+  out_path = "./output/ankiImport_#{timestamp}.txt"
   puts "Exporting to: #{out_path}"
 
 

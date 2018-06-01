@@ -4,3 +4,6 @@ resource/
 *.zip
 *.7z
 coverage/
+output/
+*.swp
+Gemfile.lock
