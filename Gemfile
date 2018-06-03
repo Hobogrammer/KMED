@@ -6,4 +6,5 @@ gem 'rake'
 gem 'pry'
 gem 'pry-debugger-jruby'
 gem 'natto'
+gem 'fuzzy-string-match'
 gem 'simplecov', :require => false, :group => :test

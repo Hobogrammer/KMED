@@ -73,7 +73,7 @@ attr_reader :author, :definition, :publisher, :sentence,
         end
         next
       else
-        part_of_speech, root, reading = x.feature.split(',')   
+        part_of_speech, root, reading = x.feature.split(',')
         conjugated_term += x.surface if part_of_speech == "助動詞"
         break
       end
