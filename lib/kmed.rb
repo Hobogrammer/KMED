@@ -18,7 +18,12 @@ def main
   CSV.open(out_path, "w") do |csv|
     import = ImportHandler.new
     File.foreach(kindle_export_path) do |line|
-      line = line.strip
+      begin
+        line = line.strip
+      rescue
+        puts "Strip failed on line from export: #{line}"
+        next
+      end
 
       if line.empty?
         line_count = 0

@@ -1,11 +1,27 @@
 require 'test_helper'
 require 'import'
+require 'pry'
 
 describe 'ImportHandler' do
+
+  let(:import) { ImportHandler.new }
+
+  it 'should process sentence metadata' do
+    import_sentence_meta = "独立後のいまもアメリカの保護下にあり、経済的にも軍事的にもこれに依存している。  <フルメタル・パニック！揺れるイントゥ・ザ・ブルー(新装版)<フルメタル・パニック！(新装版)> (富士見ファンタジア文庫)(賀東 招二;四季 童子)>"
+
+    expected_sentence = "独立後のいまもアメリカの保護下にあり、経済的にも軍事的にもこれに依存している。"
+    expected_title = "フルメタル・パニック！揺れるイントゥ・ザ・ブルー"
+    expected_metadata = "フルメタル・パニック！(新装版)> (富士見ファンタジア文庫)(賀東 招二;四季 童子)"
+
+    binding.pry
+    import.process_sentence_meta(import_sentence_meta)
+
+    assert(import.sentence.eql?(expected_sentence))
+    assert(import.title.eql?(expected_title))
+    assert(import.publisher.eql?(expected_metadata))
+  end
+
   describe 'should highlight terms in sentences' do
-
-    let(:import) { ImportHandler.new }
-
     describe 'with verbs' do
       it 'ending with -う' do
         sentence_meta = '「……えー、それでは、皆様」 　そろそろ五歳児が退屈してきた様子なのと、場が充分に温まったのを見計らった中井戸氏が、年の功で音頭を取った。   《ノロワレ　怪奇作家真木夢人と幽霊マンション（上）<ノロワレ> (メディアワークス文庫)(甲田 学人)》'.strip
