@@ -1,4 +1,5 @@
 require 'csv'
+require 'logger'
 require_relative 'dictionary'
 require_relative 'gaiji'
 require_relative 'import'
@@ -8,10 +9,13 @@ def main
   dic_path = ARGV[0]
   kindle_export_path = ARGV[1]
   timestamp = Time.now.strftime("%Y%m%d%H%M%S")
-  out_path = "./output/ankiImport_#{timestamp}.txt"
+
+  file_name = "ankiImport_#{timestamp}"
+  out_path = "./output/#{file_name}.txt"
   puts "Exporting to: #{out_path}"
 
 
+  logger = Logger.new("#{file_name}.log"
   dic = Dictionary.new(dic_path)
   gaiji = Gaiji.new(dic.name.upcase)
   line_count = 0

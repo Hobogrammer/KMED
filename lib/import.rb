@@ -1,11 +1,12 @@
+# -*- encoding : utf-8 -*-
 require 'fuzzystringmatch'
 require 'natto'
 
 class ImportHandler
-attr_reader :author, :definition, :publisher, :sentence,
-  :term, :term_w_furi, :title
+  attr_reader :author, :definition, :publisher, :sentence,
+    :term, :term_w_furi, :title
 
-  def initialize()
+  def initialize(logger)
     @author = ""
     @definition = ""
     @publisher = ""
@@ -13,6 +14,7 @@ attr_reader :author, :definition, :publisher, :sentence,
     @term = ""
     @term_w_furi = ""
     @title = ""
+    @logger = logger
   end
 
   def set_definition(gaiji, definition)
@@ -26,19 +28,20 @@ attr_reader :author, :definition, :publisher, :sentence,
 
   def process_sentence_meta(import)
     import = import.gsub(/^\d\)\s?/, '')
-    @metadata = set_meta(import.match(/<.*?>/).to_s)
-    @sentence = import.gsub(/<.*?>/, '')
+    @metadata = set_meta(import.match(/\<.*?\>$/).to_s)
+    @sentence = import.gsub(/\<.*?\>$/, '').strip!
     post_process()
   end
 
   private
 
   def get_title(import)
-    import.match(/^<(.\S*)/).to_s.gsub("<", '')
+    import.match(/^\<.*?\</).to_s.gsub("<", '').gsub(">",'')
   end
 
   def set_meta(meta)
     @title = get_title(meta)
+    meta.gsub!(/\<.*?\>/,'')
     @publisher , @author = meta.scan(/\((.*?)\)/).flatten
   end
 
@@ -46,7 +49,6 @@ attr_reader :author, :definition, :publisher, :sentence,
     full_term.gsub(/(\(.*?\))/, '')
   end
 
-  #TODO: add ruby logger
   def post_process()
     return if term.empty?
     natto = Natto::MeCab.new('-F%f[0],%f[6],%f[7]')
@@ -55,23 +57,24 @@ attr_reader :author, :definition, :publisher, :sentence,
     term_match = false
 
     parse_enum = natto.enum_parse(@sentence)
-    
-    #puts '----------------------------------------------------------'
-    #puts "Current Sentence: #{@sentence}"
-    #puts "Current TERM: #{@term}"
+
+    @logger.debug('----------------------------------------------------------')
+    @logger.debug("Current Sentence: #{@sentence}")
+    @logger.debug("Current TERM: #{@term}")
 
     begin
       parse_enum.each do |x|
-        #puts "Surface: #{x.surface}"
-        #puts "Features: #{x.feature}"
-        #puts "Current conjugated_term: #{conjugated_term}"
-        #puts "Surface Match term? #{x.surface == @term}"
+        @logger.debug("Surface: #{x.surface}")
+        @logger.debug("Features: #{x.feature}")
+        @logger.debug("Current conjugated_term: #{conjugated_term}")
+        @logger.debug("Surface Match term? #{x.surface == @term}")
+
         if term_match == false
           root = x.feature.split(',')[1]
 
-          #puts "Term match root? #{root == @term}"
-          #puts "Term distance to root #{fuzzy.getDistance(@term, root)}"
-          #puts '----------------------------------------------------------'
+          @logger.debug("Term match root? #{root == @term}")
+          @logger.debug("Term distance to root #{fuzzy.getDistance(@term, root)}")
+          @logger.debug('----------------------------------------------------------')
 
           if x.surface == @term
             conjugated_term += x.surface
@@ -88,18 +91,18 @@ attr_reader :author, :definition, :publisher, :sentence,
         end
       end
     rescue
-      puts "Natto broke. Falling back"
+      @logger.debug("Natto broke. Falling back")
     end
 
-    #puts "Sentence before: #{@sentence}"
+    @logger.debug("Sentence before: #{@sentence}")
     colors = ["#A6E22E", "#947ABE"]
     if !conjugated_term.empty?
-      #puts "MATCHED CONJUGATED_TERM: #{conjugated_term}"
+      @logger.debug("MATCHED CONJUGATED_TERM: #{conjugated_term}")
       @sentence = sentence.gsub(conjugated_term, "<span style='color:#{colors.sample}'>#{conjugated_term}</span>")
     else
-      #puts "NO MATCHES FOUND"
+      @logger.debug("NO MATCHES FOUND")
       @sentence = sentence.gsub(@term, "<span style='color:#{colors.sample}'>#{@term}</span>")
     end
-    puts @sentence
+    @logger.debug("Result: #{@sentence}")
   end
 end
